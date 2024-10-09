@@ -1,0 +1,41 @@
+version: '3.8'
+
+#volumes:
+#  redis-data:
+#    null
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/python:1-3.10-bookworm
+
+    # Security Opt and cap_add allow for C++ based debuggers to work. 
+    # See `runArgs`: https://github.com/Microsoft/vscode-docs/blob/main/docs/remote/devcontainerjson-reference.md
+    #     security_opt:
+    #       - seccomp:unconfined
+    #     cap_add:
+    #       - SYS_PTRACE
+
+    volumes:
+      - ..:/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    #network_mode: service:redis
+    # Uncomment the next line to use a non-root user for all processes.
+    # user: vscode
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+  oracle:
+    image: gvenzl/oracle-xe
+    container_name: oracle-db
+    environment:
+      - ORACLE_PASSWORD=admin_password # Set your Oracle DB admin password
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
+
+volumes:
+  kafka_data:
+    driver: local

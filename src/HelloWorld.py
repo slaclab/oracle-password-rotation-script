@@ -10,8 +10,20 @@
 #-----------------------------------------------------------------------------
 
 import sys
+import oracledb
+
 
 def main():
+    un = 'system'
+    cs = 'oracle/XEPDB1'
+    pw = "admin_password"
+
+    with oracledb.connect(user=un, password=pw, dsn=cs) as connection:
+        with connection.cursor() as cursor:
+            sql = """select sysdate from dual"""
+            for r in cursor.execute(sql):
+                print(r)
+
     if len(sys.argv)<2:
         print("syntax: HelloWorld <your name>")
         return
