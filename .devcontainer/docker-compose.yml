@@ -27,14 +27,14 @@ services:
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
     # (Adding the "ports" property to this file will not forward from a Codespace.)
   oracle:
-    image: gvenzl/oracle-xe
+    image: softw/oracle:21.3.0-xe
     container_name: oracle-db
     environment:
       - ORACLE_PASSWORD=admin_password # Set your Oracle DB admin password
     ports:
       - "1521:1521"
-    volumes:
-      - ./init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
+    # volumes:
+    #   - ./init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
 
 volumes:
   kafka_data:
